@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import SearchInput from '../SearchInput';
 import SearchTypes from '../SearchTypes';
@@ -10,6 +10,10 @@ class SearchBox extends PureComponent {
     searchType: 'all',
   };
 
+  static propTypes = {
+    queryApi: PropTypes.func.isRequired,
+  };
+
   searchTextChanged = (event) => {
     this.setState({ searchText: event.target.value });
   }
@@ -18,11 +22,16 @@ class SearchBox extends PureComponent {
     this.setState({ searchType: event.target.value });
   }
 
+  search = () => {
+    this.props.queryApi(this.state.searchText, this.state.searchType);
+  }
+
   render() {
     return (
       <div>
         <SearchInput searchText={this.state.searchText} searchTextChanged={this.searchTextChanged} />
         <SearchTypes searchType={this.state.searchType} searchTypeChanged={this.searchTypeChanged} />
+        <button disabled={!this.state.searchText} onClick={this.search}>Search</button>
       </div>
     );
   }
