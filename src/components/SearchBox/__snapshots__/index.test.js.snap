@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchBox renders correctly 1`] = `
+<div>
+  <input
+    onChange={[Function]}
+    placeholder="Search images, vectors and photos"
+    type="text"
+    value=""
+  />
+  <select
+    onChange={[Function]}
+    type="text"
+    value="all"
+  >
+    <option
+      value="all"
+    >
+      all
+    </option>
+    <option
+      value="photo"
+    >
+      photo
+    </option>
+    <option
+      value="illustration"
+    >
+      illustration
+    </option>
+    <option
+      value="vector"
+    >
+      vector
+    </option>
+  </select>
+  <button
+    disabled={true}
+    onClick={[Function]}
+  >
+    Search
+  </button>
+</div>
+`;

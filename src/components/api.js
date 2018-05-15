@@ -51,3 +51,4 @@ class PixabayAPI {
 }
 
 export default PixabayAPI;
+export const DefaultImageType = DEFAULT_TYPE;

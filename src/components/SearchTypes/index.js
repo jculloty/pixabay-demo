@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import PixabayAPI, { DefaultImageType } from '../api';
+
 function SearchTypes(props) {
   const options = props.imageTypes.map((type) => <option value={type} key={type}>{type}</option>);
   return (
@@ -17,8 +19,8 @@ SearchTypes.propTypes = {
 };
 
 SearchTypes.defaultProps = {
-  searchType: 'all',
-  imageTypes: ['all', 'photo', 'illustration', 'vector'],
+  searchType: DefaultImageType,
+  imageTypes: PixabayAPI.imageTypes,
 };
 
 export default SearchTypes;
