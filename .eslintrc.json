@@ -1,0 +1,111 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jquery": true,
+    "jest": true
+  },
+  "parser": "babel-eslint",
+  "plugins": [
+    "react",
+    "babel"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base",
+    "plugin:react/recommended"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": [
+          "node_modules",
+          "src"
+        ],
+        "extensions": [
+          ".js", ".mjs", ".json"
+        ]
+      }
+    }
+  },
+  "parserOptions": {
+      "ecmaVersion": 8,
+      "sourceType": "module",
+      "ecmaFeatures": {
+          "jsx": true
+      }
+  },
+  "rules": {
+    "spaced-comment": ["error", "always", { "block": { "exceptions": ["*"], "balanced": true } }],
+    "import/extensions": ["error", "always", {
+      "js": "never",
+      "jsx": "never",
+      "mjs": "never"
+    }],
+    "generator-star-spacing": ["error", "before"],
+    "arrow-parens": ["error", "always"],
+    "object-curly-newline": ["error", {
+      "ObjectExpression": { "minProperties": 7, "multiline": true, "consistent": true },
+      "ObjectPattern": { "minProperties": 6, "multiline": true, "consistent": true }
+    }],
+    "prefer-destructuring": [
+      "error",
+      {
+        "VariableDeclarator": { "array": false, "object": true },
+        "AssignmentExpression": { "array": true, "object": false }
+      },
+      { "enforceForRenamedProperties" : false }
+    ],
+    "class-methods-use-this": ["error", { "exceptMethods": ["shouldComponentUpdate", "render"] }],
+    "space-before-function-paren": ["error", "never"],
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "ignore"
+    }],
+    "radix": [
+      "error",
+      "as-needed"
+    ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "yoda": 0,
+    "strict": 0,
+    "no-plusplus": 0,
+    "global-require": 0,
+    "import/no-dynamic-require": 0,
+    "lines-around-directive": 0,
+    "import/no-extraneous-dependencies": 0,
+    "func-names": [
+      "warn",
+      "as-needed"
+    ],
+    "brace-style": [
+      "error",
+      "stroustrup",
+      { "allowSingleLine": true }
+    ],
+    "no-unused-expressions": 0,
+    "no-underscore-dangle": 0,
+    "no-param-reassign": 0,
+    "default-case": 0,
+    "max-len": [
+      "error",
+      200,
+      2,
+      { "ignoreUrls": true }
+    ],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ]
+  }
+}
