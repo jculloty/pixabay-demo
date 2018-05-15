@@ -10,8 +10,11 @@ function GridImage(props) {
   };
 
   return (
-    <div className="grid-image-container" style={style}>
+    <div className="grid-image-container" style={style} title={props.image.tags}>
       <img src={props.image.url} />
+      <span>
+        {props.image.user}
+      </span>
     </div>
   );
 }

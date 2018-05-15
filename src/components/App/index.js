@@ -10,6 +10,7 @@ const api = new PixabayAPI();
 class App extends Component {
   state = {
     images: [],
+    total: 0,
   };
 
   queryApi = (text, type) => {
@@ -19,11 +20,18 @@ class App extends Component {
       });
   }
 
+  loadMore = (text, type) => {
+    api.loadMore()
+      .then((result) => {
+        this.setState(result);
+      });
+  }
+
   render() {
     return (
       <div>
         <SearchBox queryApi={this.queryApi} />
-        <Grid images={this.state.images} />
+        <Grid images={this.state.images} loadMore={this.loadMore} />
       </div>
     );
   }

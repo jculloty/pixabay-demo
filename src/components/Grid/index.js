@@ -1,8 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ReactResizeDetector from 'react-resize-detector';
 
 import GridImage from '../GridImage';
+import LoadMore from '../LoadMore';
 
 import './grid.css';
 
@@ -16,10 +17,12 @@ class Grid extends PureComponent {
     this.state = {
       images: [], // a list of images scaled to fix the available space
       width: undefined,
-    }
+    };
   }
+
   static propTypes = {
     images: PropTypes.array.isRequired, // the images returned by the API sizes will not fit the screen
+    loadMore: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -30,6 +33,19 @@ class Grid extends PureComponent {
     return Grid.calculateImageSizes(nextProps.images, prevState.width);
   }
 
+  // copies image details from the props image to the states's iamge
+  // This is mainly done because we should not mutate the props
+  static copyImageDetails(image, height) {
+    return {
+      id: image.id,
+      user: image.user,
+      tags: image.tags,
+      height,
+      width: Math.floor(image.medium.aspect * height) - 10,
+      url: image.medium.url,
+    };
+  }
+
   static calculateImageSizes(propImages, width) {
     // the intial width will be undefined perhaps this should be set in the constructor
     width = width || 1000;
@@ -38,34 +54,21 @@ class Grid extends PureComponent {
 
     let aspect = 0;
     let rowStart = 0;
-    let row = 0;
     for (let i = 0; i < imageCount; i++) {
       aspect += propImages[i].medium.aspect;
       const fitHeight = Math.floor(width / aspect);
       if (fitHeight <= MAX_IMAGE_HEIGHT) {
         for (let k = rowStart; k <= i; k++) {
-          images.push({
-            id: propImages[k].id,
-            height: fitHeight,
-            width: Math.floor(propImages[k].medium.aspect * fitHeight) - 10,
-            url: propImages[k].medium.url,
-            row,
-          });
+          images.push(Grid.copyImageDetails(propImages[k], fitHeight));
         }
 
-        row++;
         rowStart = i + 1;
         aspect = 0;
       }
     }
 
     for (let i = rowStart; i < imageCount; i++) {
-      images.push({
-        id: propImages[i].id,
-        height: MAX_IMAGE_HEIGHT,
-        width: Math.floor(propImages[i].medium.aspect * MAX_IMAGE_HEIGHT),
-        url: propImages[i].medium.url,
-      });
+      images.push(Grid.copyImageDetails(propImages[i], MAX_IMAGE_HEIGHT));
     }
 
     return { images };
@@ -78,12 +81,16 @@ class Grid extends PureComponent {
   }
 
   render() {
+    const hasImages = this.state.images.length > 0;
     const images = this.state.images.map((image) => <GridImage key={image.id} image={image} />);
     return (
-      <div className="grid" ref={this.domElement} >
-        { images }
-        <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
-      </div>
+      <Fragment>
+        <div className="grid" ref={this.domElement} >
+          { images }
+          <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
+        </div>
+        { hasImages && <LoadMore onClick={this.props.loadMore} /> }
+      </Fragment>
     );
   }
 }

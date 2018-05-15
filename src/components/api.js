@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 // TODO This should not be hard-coded
 const KEY = '8506502-fd530cf53ce4c9ff2733ae363';
 
@@ -5,7 +7,8 @@ const PIXABAY_URL = 'https://pixabay.com/api/';
 const DEFAULT_TYPE = 'all';
 
 class PixabayAPI {
-  cache = new Map();
+  lastParams = undefined;
+  lastResult = undefined;
   static imageTypes = ['all', 'photo', 'illustration', 'vector'];
 
   static validateImageType(type) {
@@ -58,7 +61,6 @@ class PixabayAPI {
   }
 
   query(text, type = DEFAULT_TYPE, page = 1, perPage = 100) {
-    return Promise.resolve(PixabayAPI.processResponse(fakeResponse));
     // ensure the type is valid
     // I am not throwing any errors here as the type should aways be valid
     type = PixabayAPI.validateImageType(type) ? type : DEFAULT_TYPE;
@@ -72,12 +74,16 @@ class PixabayAPI {
       per_page: perPage,
     };
 
-    // Caching the requests as the API will return an error if we make identical rquests
-    // [ERROR 429] Identical requests must be cached.
-    // It appaers that this is being cleared after a few seconds; storing the previous request and a time might be better
-    if (this.cache.has(params)) {
-      return this.cache.get(params);
+    if (_.isEqual(this.lastParams, params)) {
+      return Promise.resolve(this.lastResult);
     }
+
+    this.lastResult = undefined;
+    return this.fetch(params);
+  }
+
+  fetch(params) {
+    this.lastParams = params;
 
     const url = new URL(PIXABAY_URL);
     Object.keys(params).forEach((key) => url.searchParams.append(key, params[key]));
@@ -91,9 +97,22 @@ class PixabayAPI {
       })
       .then(((json) => {
         json = PixabayAPI.processResponse(json);
-        this.cache.set(params, json);
+        if (this.lastResult) {
+          json.images = this.lastResult.images.concat(json.images)
+        }
+
+        this.lastResult = json;
         return json;
       }));
+  }
+
+  loadMore() {
+    if (!this.lastParams) {
+      return Promise.reject(new Error('No previous query detected'));
+    }
+
+    this.lastParams.page++;
+    return this.fetch(this.lastParams);
   }
 }
 
