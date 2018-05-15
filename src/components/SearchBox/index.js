@@ -31,7 +31,7 @@ class SearchBox extends PureComponent {
       <div>
         <SearchInput searchText={this.state.searchText} searchTextChanged={this.searchTextChanged} />
         <SearchTypes searchType={this.state.searchType} searchTypeChanged={this.searchTypeChanged} />
-        <button disabled={!this.state.searchText} onClick={this.search}>Search</button>
+        <button onClick={this.search}>Search</button>
       </div>
     );
   }

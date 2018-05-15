@@ -15,7 +15,7 @@ class App extends Component {
   queryApi = (text, type) => {
     api.query(text, type)
       .then((result) => {
-        this.setState({ images: result.hits });
+        this.setState(result);
       });
   }
 

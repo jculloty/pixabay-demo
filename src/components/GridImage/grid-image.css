@@ -1,0 +1,14 @@
+.grid-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.grid-image-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
