@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import SearchBox from '../SearchBox';
 import Grid from '../Grid';
 
-import api from '../api';
+import PixabayAPI from '../api';
+// this should be in index
+const api = new PixabayAPI();
 
 class App extends Component {
   state = {
@@ -11,7 +13,7 @@ class App extends Component {
   };
 
   queryApi = (text, type) => {
-    api(text, type)
+    api.query(text, type)
       .then((result) => {
         this.setState({ images: result.hits });
       });
