@@ -5,6 +5,8 @@ import ReactResizeDetector from 'react-resize-detector';
 import GridImage from './GridImage';
 import LoadMore from '../LoadMore';
 
+import { withApi } from '../ApiContext';
+
 import './grid.css';
 
 const MAX_IMAGE_HEIGHT = 250;
@@ -100,4 +102,4 @@ class Grid extends PureComponent {
   }
 }
 
-export default Grid;
+export default withApi(Grid, ['data']);

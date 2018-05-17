@@ -1,7 +1,11 @@
-import React, { createContext } from 'react';
+import React, { createContext, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-const ApiContext = createContext({
+import PixabayAPI from './api';
+
+const api = new PixabayAPI();
+
+const context = {
   queryApi: () => {},
   loadMore: () => {},
   findCachedImage: () => {},
@@ -11,9 +15,60 @@ const ApiContext = createContext({
     images: [],
     total: 0,
   },
-});
+};
+
+const ApiContext = createContext(context);
 
 export default ApiContext;
+
+export function withApiProvider(Component) {
+  // eslint-disable-next-line react/display-name
+  return class extends PureComponent {
+    state = {
+      queryApi: (text, type) => this.queryApi(text, type),
+      loadMore: () => this.loadMore(),
+      findCachedImage: (id) => this.findCachedImage(id),
+      types: PixabayAPI.types,
+      categories: PixabayAPI.categories,
+      data: {
+        images: [],
+        total: 0,
+      },
+    };
+
+    findCachedImage = (id) => api.findCachedImage(id)
+
+    queryApi = (text, type) => {
+      api.query(text, type)
+        .then((data) => {
+          this.setState({ data });
+          return data;
+        });
+    }
+
+    loadMore = () => {
+      api.loadMore()
+        .then((data) => {
+          this.setState({ data });
+          return data;
+        });
+    }
+
+    componentDidMount() {
+      if (!this.state.data.images.length) {
+        this.queryApi();
+      }
+    }
+
+    render() {
+      return (
+        <ApiContext.Provider value={this.state}>
+          <Component {...this.props} />
+        </ApiContext.Provider>
+      );
+    }
+  };
+}
 
 export function withApi(Component, requiredProps) {
   return function ApiComponent(props) {

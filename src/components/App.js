@@ -7,48 +7,12 @@ import SearchBox from './Search/SearchBox';
 import Grid from './Grid';
 import ImageView from './ImageView';
 
-import PixabayAPI from './api';
-import ApiContext from './ApiContext';
-
-const api = new PixabayAPI();
+import { withApiProvider } from './ApiContext';
 
 class App extends Component {
   state = {
-    queryApi: (text, type) => this.queryApi(text, type),
-    loadMore: () => this.loadMore(),
-    findCachedImage: (id) => this.findCachedImage(id),
-    types: PixabayAPI.types,
-    categories: PixabayAPI.categories,
-    data: {
-      images: [],
-      total: 0,
-    },
     hasError: false,
   };
-
-  findCachedImage = (id) => api.findCachedImage(id)
-
-  queryApi = (text, type) => {
-    api.query(text, type)
-      .then((data) => {
-        this.setState({ data });
-        return data;
-      });
-  }
-
-  loadMore = () => {
-    api.loadMore()
-      .then((data) => {
-        this.setState({ data });
-        return data;
-      });
-  }
-
-  componentDidMount() {
-    if (!this.state.data.images.length) {
-      this.queryApi();
-    }
-  }
 
   componentDidCatch(error, info) {
     console.error(error, info);
@@ -61,7 +25,6 @@ class App extends Component {
     }
 
     return (
-      <ApiContext.Provider value={this.state}>
       <BrowserRouter>
           <div className="content">
             <header className="sticky-header">
@@ -73,7 +36,7 @@ class App extends Component {
             <section>
               <Switch>
                 <Route exact path='/' >
-                  <Grid data={this.state.data} />
+                  <Grid />
                 </Route>
                 <Route path='/images/:id'>
                   <ImageView />
@@ -90,9 +53,8 @@ class App extends Component {
             </footer>
           </div>
       </BrowserRouter>
-      </ApiContext.Provider>
     );
   }
 }
 
-export default App;
+export default withApiProvider(App);
