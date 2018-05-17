@@ -3,3 +3,129 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.content {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+header {
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  height: 52px;
+}
+
+.sticky-header {
+  /* position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10; */
+}
+
+footer {
+  display: none;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  height: 52px;
+  color: #777;
+}
+
+footer p {
+  padding-left: 20px;
+}
+
+section {
+  /* margin-top: 50px; */
+  flex: 1;
+}
+
+/* input {
+  width: 100%;
+  margin: 0;
+  padding: 18px 0;
+  border: 0;
+  font: normal 16px arial,sans-serif;
+} */
+
+.load-more-button {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #4CAF50;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.tag-bar {
+  margin: 10px;
+}
+
+.image-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  margin: 0 0 8px 12px;
+  font-size: 13px;
+  color: #777;
+  border: 1px solid #cecece;
+  border-radius: 20px;
+  text-transform: lowercase;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.grid-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.grid-image-container img,
+.image-view img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.grid-image-container span {
+  display: none;
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 8px;
+  color: #fff;
+  font-size: 14px;
+  background: linear-gradient(to top,rgba(0,0,0,.6) 0,rgba(0,0,0,0) 100%);
+}
+
+.grid-image-container:hover span {
+  display: inline-block;
+}
+
+.image-view {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 20px;
+  background: yellow;
+}
+
+.single-image {
+  background: red;
+}
+.image-details {
+  background: black;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        background-color: lightblue;
+    }
+}

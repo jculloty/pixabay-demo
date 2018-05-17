@@ -1,20 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import './load-more.css';
+import { withApi } from '../ApiContext';
 
 function LoadMore(props) {
   return (
-    <div className="load-more-button">
-      <button onClick={props.onClick}>
+    <div>
+      <button onClick={props.loadMore} className="load-more-button">
         Load more images...
       </button>
     </div>
   );
 }
 
-LoadMore.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-export default LoadMore;
+export default withApi(LoadMore, ['loadMore']);

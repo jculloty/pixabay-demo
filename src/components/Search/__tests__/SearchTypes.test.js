@@ -5,11 +5,11 @@ import renderer from 'react-test-renderer';
 
 import SearchTypes from '.';
 
-import PixabayAPI, { DefaultImageType } from '../api';
+import { DefaultImageType, ImageTypes } from '../api';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const buildComponent = function(type = DefaultImageType, imageTypes = PixabayAPI.imageTypes, onChange = () => {}) {
+const buildComponent = function(type = DefaultImageType, imageTypes = ImageTypes, onChange = () => {}) {
   return <SearchTypes searchType={type} imageTypes={imageTypes} searchTypeChanged={onChange} />;
 };
 
@@ -28,11 +28,11 @@ describe('SearchType', () => {
 
   it('renders the correct number of options', () => {
     const wrapper = render(buildComponent());
-    expect(wrapper.find('option')).toHaveLength(PixabayAPI.imageTypes.length);
+    expect(wrapper.find('option')).toHaveLength(ImageTypes.length);
   });
 
   it('selects the correct initial value', () => {
-    const initialValue = PixabayAPI.imageTypes[1];
+    const initialValue = ImageTypes[1];
     const wrapper = shallow(buildComponent(initialValue));
 
     const { value } = wrapper.find('select').get(0).props;
@@ -41,9 +41,9 @@ describe('SearchType', () => {
 
   it('Changes trigger the correct method', () => {
     const textChangedMock = jest.fn();
-    const newType = PixabayAPI.imageTypes[1];
+    const newType = ImageTypes[1];
 
-    const wrapper = mount(buildComponent(DefaultImageType, PixabayAPI.imageTypes, textChangedMock));
+    const wrapper = mount(buildComponent(DefaultImageType, ImageTypes, textChangedMock));
     const select = wrapper.find('select');
 
     select.simulate('change', { target: { value: newType } });

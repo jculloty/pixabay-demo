@@ -9,10 +9,26 @@ const DEFAULT_TYPE = 'all';
 class PixabayAPI {
   lastParams = undefined;
   lastResult = undefined;
-  static imageTypes = ['all', 'photo', 'illustration', 'vector'];
+  static types = ['all', 'photo', 'illustration', 'vector'];
+  static orientation = ['all', 'horizontal', 'vertical'];
+  static order = ['popular', 'latest'];
+  static categories = [
+    'fashion', 'nature', 'backgrounds', 'science', 'education', 'people',
+    'feelings', 'religion', 'health', 'places', 'animals', 'industry',
+    'food', 'computer', 'sports', 'transportation', 'travel', 'buildings',
+    'business', 'music'].sort();
 
-  static validateImageType(type) {
-    return PixabayAPI.imageTypes.includes(type);
+
+  static validateType(type) {
+    return PixabayAPI.types.includes(type);
+  }
+
+  static validateCategory(category) {
+    return PixabayAPI.categories.includes(category);
+  }
+
+  static validateOption(parameter, value) {
+    return PixabayAPI[parameter].includes(value);
   }
 
   /**
@@ -20,38 +36,37 @@ class PixabayAPI {
    * Performs some calcualtions that will be needed later e.g. aspect ratio
    */
   static processResponse(response) {
-    const propertiesToCopy = [
-      'comments',
-      'downloads',
-      'favorites',
-      'id',
-      'likes',
-      'tags',
-      'user',
-      'views',
-    ];
-
     const images = response.hits.map((image) => {
-      const mapped = {}; // will be the new image object
-
-      // copy over all the properties we want to keep
-      propertiesToCopy.forEach((property) => { mapped[property] = image[property]; });
-
-      // create an array of the different image sizes
-      mapped.large = {
-        width: image.imageWidth,
-        height: image.imageHeight,
-        url: image.largeImageURL,
-        aspect: image.imageWidth / image.imageHeight,
+      const mappedImage = {
+        id: image.id,
+        tags: image.tags,
+        type: image.type,
+        large: {
+          width: image.imageWidth,
+          height: image.imageHeight,
+          url: image.largeImageURL,
+          aspect: image.imageWidth / image.imageHeight,
+        },
+        medium: {
+          width: image.webformatWidth,
+          height: image.webformatHeight,
+          url: image.webformatURL,
+          aspect: image.webformatWidth / image.webformatHeight,
+        },
+        user: {
+          id: image.user_id,
+          name: image.user,
+          url: image.userImageURL,
+        },
+        popularity: {
+          likes: image.likes,
+          views: image.views,
+          comments: image.comments,
+          downloads: image.downloads,
+          favorites: image.favorites,
+        },
       };
-      mapped.medium = {
-        width: image.webformatWidth,
-        height: image.webformatHeight,
-        url: image.webformatURL,
-        aspect: image.webformatWidth / image.webformatHeight,
-      };
-
-      return mapped;
+      return mappedImage;
     });
 
     return {
@@ -60,19 +75,30 @@ class PixabayAPI {
     };
   }
 
-  query(text, type = DEFAULT_TYPE, page = 1, perPage = 100) {
+  query(text, type = DEFAULT_TYPE, page = 1, perPage = 100, category) {
     // ensure the type is valid
     // I am not throwing any errors here as the type should aways be valid
-    type = PixabayAPI.validateImageType(type) ? type : DEFAULT_TYPE;
+    type = PixabayAPI.validateType(type) ? type : DEFAULT_TYPE;
     perPage = Math.max(perPage, 3);
 
+    // filter out any undefined params
     const params = {
       key: KEY,
-      q: text,
       image_type: type,
       page,
       per_page: perPage,
     };
+    if (text) {
+      params.q = text;
+    }
+
+    if (PixabayAPI.validateCategory(category)) {
+      params.category = category;
+    }
+
+    // this.lastParams = params;
+    // this.lastResult = PixabayAPI.processResponse(fakeResponse);
+    // return Promise.resolve(this.lastResult);
 
     if (_.isEqual(this.lastParams, params)) {
       return Promise.resolve(this.lastResult);
@@ -98,7 +124,7 @@ class PixabayAPI {
       .then(((json) => {
         json = PixabayAPI.processResponse(json);
         if (this.lastResult) {
-          json.images = this.lastResult.images.concat(json.images)
+          json.images = this.lastResult.images.concat(json.images);
         }
 
         this.lastResult = json;
@@ -114,7 +140,20 @@ class PixabayAPI {
     this.lastParams.page++;
     return this.fetch(this.lastParams);
   }
+
+  findCachedImage(id) {
+    id = parseInt(id);
+    // we do not have any cached images
+    if (!this.lastResult || !this.lastResult.images) {
+      // return undefined the same as when the id is not found by lodash's _.find() method
+      return undefined;
+    }
+
+    return _.find(this.lastResult.images, (image) => image.id === id);
+  }
 }
 
 export default PixabayAPI;
 export const DefaultImageType = DEFAULT_TYPE;
+export const ImageTypes = PixabayAPI.types;
+export const ImageCategories = PixabayAPI.categories;

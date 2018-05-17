@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import './grid-image.css';
+import { Link } from 'react-router-dom';
 
 function GridImage(props) {
   const style = {
@@ -11,10 +10,12 @@ function GridImage(props) {
 
   return (
     <div className="grid-image-container" style={style} title={props.image.tags}>
-      <img src={props.image.url} />
-      <span>
-        {props.image.user}
-      </span>
+      <Link to={`/images/${props.image.id}`}>
+        <img src={props.image.url} alt="" />
+        <span>
+          {props.image.user.name}
+        </span>
+      </Link>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ReactResizeDetector from 'react-resize-detector';
 
-import GridImage from '../GridImage';
+import GridImage from './GridImage';
 import LoadMore from '../LoadMore';
 
 import './grid.css';
@@ -21,16 +21,18 @@ class Grid extends PureComponent {
   }
 
   static propTypes = {
-    images: PropTypes.array.isRequired, // the images returned by the API sizes will not fit the screen
-    loadMore: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired, // the images returned by the API sizes will not fit the screen
   };
 
   static defaultProps = {
-    images: [],
+    data: {
+      images: [],
+      total: 0,
+    },
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return Grid.calculateImageSizes(nextProps.images, prevState.width);
+    return Grid.calculateImageSizes(nextProps.data.images, prevState.width);
   }
 
   // copies image details from the props image to the states's iamge
@@ -76,20 +78,23 @@ class Grid extends PureComponent {
 
   onResize = () => {
     const width = this.domElement.current.offsetWidth;
-    const { images } = Grid.calculateImageSizes(this.props.images, width);
+    const { images } = Grid.calculateImageSizes(this.props.data.images, width);
     this.setState({ width, images });
   }
 
   render() {
-    const hasImages = this.state.images.length > 0;
-    const images = this.state.images.map((image) => <GridImage key={image.id} image={image} />);
+    const { images } = this.state;
+    const { total } = this.props.data;
+
+    const imageList = images.map((image) => <GridImage key={image.id} image={image} />);
     return (
       <Fragment>
         <div className="grid" ref={this.domElement} >
-          { images }
+          { imageList }
           <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
         </div>
-        { hasImages && <LoadMore onClick={this.props.loadMore} /> }
+        <span>{`${images.length} of ${total}`}</span>
+        { (total > images.length) && <LoadMore /> }
       </Fragment>
     );
   }
