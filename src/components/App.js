@@ -15,6 +15,7 @@ class App extends Component {
   };
 
   componentDidCatch(error, info) {
+    // eslint-disable-next-line no-console
     console.error(error, info);
     this.setState({ hasError: true });
   }
@@ -27,7 +28,7 @@ class App extends Component {
     return (
       <BrowserRouter>
           <div className="content">
-            <header className="sticky-header">
+            <header>
               <Link to="/">
                 <span>Pixabay</span>
               </Link>

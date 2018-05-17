@@ -11,7 +11,8 @@ class UserInfo extends PureComponent {
   }
 
   queryUser = () => {
-    this.props.queryApi(`user:${this.props.user.name}`);
+    this.props.setOption('query', `user:${this.props.user.name}`);
+    this.props.queryApi();
     this.props.history.push('/');
   }
 
@@ -19,12 +20,12 @@ class UserInfo extends PureComponent {
     const { user } = this.props;
 
     return (
-      <span onClick={this.queryUser}>
-        <img src={user.url} alt="" />
-        <span>{user.name}</span>
-      </span>
+      <div onClick={this.queryUser}>
+        <img src={user.url} alt="" className="user-image" />
+        <span style={{ fontSize: '32px', paddingTop: '25px', textAlign: 'center' }}>{user.name}</span>
+      </div>
     );
   }
 }
 
-export default withRouter(withApi(UserInfo, ['queryApi']));
+export default withRouter(withApi(UserInfo, ['queryApi', 'setOption']));

@@ -13,14 +13,6 @@ body {
 header {
   background: #fafafa;
   border-bottom: 1px solid #eee;
-  height: 100px;
-}
-
-.sticky-header {
-  /* position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10; */
 }
 
 footer {
@@ -114,18 +106,34 @@ section {
   flex-wrap: wrap;
   justify-content: space-evenly;
   margin: 20px;
-  background: yellow;
 }
 
 .single-image {
-  background: red;
-}
-.image-details {
-  background: black;
+  padding: 10px;
 }
 
-@media only screen and (max-width: 600px) {
-    body {
-        background-color: lightblue;
-    }
+
+.image-details {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.user-image {
+  border-radius: .5rem !important;
+}
+
+.image-summary {
+  padding: 15px 20px;
+  border-radius: 10px;
+  background: #f7f8fa;
+}
+
+.image-summary .summary-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  color: #636363;
+  line-height: 1.6;
 }

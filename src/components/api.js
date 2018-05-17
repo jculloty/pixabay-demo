@@ -112,12 +112,13 @@ class PixabayAPI {
           name: image.user,
           url: image.userImageURL,
         },
-        popularity: {
+        summary: {
           likes: image.likes,
           views: image.views,
           comments: image.comments,
           downloads: image.downloads,
           favorites: image.favorites,
+          resolution: `${image.imageWidth}x${image.imageHeight}`,
         },
       };
       return mappedImage;
@@ -144,7 +145,6 @@ class PixabayAPI {
 
   query() {
     const params = this.currentQueryOptions;
-console.log(this.currentQueryOptions, '??');
     // this.lastParams = params;
     // this.lastResult = PixabayAPI.processResponse(fakeResponse);
     // return Promise.resolve(this.lastResult);
