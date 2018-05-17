@@ -5,7 +5,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import GridImage from './GridImage';
 import LoadMore from '../LoadMore';
 
-import { withApi } from '../ApiContext';
+import withApi from '../ApiContext';
 
 import './grid.css';
 

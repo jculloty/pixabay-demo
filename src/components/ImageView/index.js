@@ -8,7 +8,7 @@ import ImageTag from '../ImageTag';
 import UserInfo from '../UserInfo';
 import Summary from './Summary';
 
-import { withApi } from '../ApiContext';
+import withApi from '../ApiContext';
 
 class ImageView extends PureComponent {
   // the dom element needed to calculate the available width on resize

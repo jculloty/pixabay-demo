@@ -7,29 +7,83 @@ const PIXABAY_URL = 'https://pixabay.com/api/';
 const DEFAULT_TYPE = 'all';
 
 class PixabayAPI {
+  currentQueryOptions = {
+    key: KEY,
+    image_type: DEFAULT_TYPE,
+    page: 1,
+    per_page: 100,
+  };
+  static searchOptions = {
+    category: {
+      defaultOption: undefined,
+      options: [
+        'fashion', 'nature', 'backgrounds', 'science', 'education', 'people',
+        'feelings', 'religion', 'health', 'places', 'animals', 'industry',
+        'food', 'computer', 'sports', 'transportation', 'travel', 'buildings',
+        'business', 'music'],
+      multiple: false,
+      name: 'category',
+    },
+    colors: {
+      defaultOption: undefined,
+      options: [
+        'grayscale', 'transparent', 'red', 'orange', 'yellow', 'green', 'turquoise',
+        'blue', 'lilac', 'pink', 'white', 'gray', 'black', 'brown',
+      ],
+      multiple: true,
+      name: 'colors',
+    },
+    editorsChoice: {
+      defaultOption: 'false',
+      options: ['false', 'true'],
+      multiple: false,
+      name: 'editorsChoice',
+      queryParam: 'editors_choice',
+    },
+    minHeight: { // TODO add filter
+      defaultOption: 0,
+      name: 'minHeight',
+      queryParam: 'min_height',
+    },
+    minWidth: { // TODO add filter
+      defaultOption: 0,
+      name: 'minWidth',
+      queryParam: 'min_width',
+    },
+    order: {
+      defaultOption: 'popular',
+      options: ['popular', 'latest'],
+      multiple: false,
+      name: 'order',
+    },
+    orientation: {
+      defaultOption: 'all',
+      options: ['all', 'horizontal', 'vertical'],
+      multiple: false,
+      name: 'orientation',
+    },
+    query: {
+      defaultOption: undefined,
+      name: 'query',
+      queryParam: 'q',
+    },
+    safeSearch: {
+      defaultOption: 'false',
+      options: ['false', 'true'],
+      multiple: false,
+      name: 'safeSearch',
+      queryParam: 'safesearch',
+    },
+    type: {
+      defaultOption: 'all',
+      options: ['all', 'photo', 'illustration', 'vector'],
+      multiple: false,
+      name: 'type',
+      queryParam: 'image_type',
+    },
+  };
   lastParams = undefined;
   lastResult = undefined;
-  static types = ['all', 'photo', 'illustration', 'vector'];
-  static orientation = ['all', 'horizontal', 'vertical'];
-  static order = ['popular', 'latest'];
-  static categories = [
-    'fashion', 'nature', 'backgrounds', 'science', 'education', 'people',
-    'feelings', 'religion', 'health', 'places', 'animals', 'industry',
-    'food', 'computer', 'sports', 'transportation', 'travel', 'buildings',
-    'business', 'music'].sort();
-
-
-  static validateType(type) {
-    return PixabayAPI.types.includes(type);
-  }
-
-  static validateCategory(category) {
-    return PixabayAPI.categories.includes(category);
-  }
-
-  static validateOption(parameter, value) {
-    return PixabayAPI[parameter].includes(value);
-  }
 
   /**
    * Protects the code against API changes by converting names
@@ -75,34 +129,29 @@ class PixabayAPI {
     };
   }
 
-  query(text, type = DEFAULT_TYPE, page = 1, perPage = 100, category) {
-    // ensure the type is valid
-    // I am not throwing any errors here as the type should aways be valid
-    type = PixabayAPI.validateType(type) ? type : DEFAULT_TYPE;
-    perPage = Math.max(perPage, 3);
-
-    // filter out any undefined params
-    const params = {
-      key: KEY,
-      image_type: type,
-      page,
-      per_page: perPage,
-    };
-    if (text) {
-      params.q = text;
+  setOption(name, value) {
+    const config = PixabayAPI.searchOptions[name];
+    if (config) {
+      const queryParam = config.queryParam ? config.queryParam : name;
+      // TODO validate search options
+      this.currentQueryOptions[queryParam] = value;
     }
-
-    if (PixabayAPI.validateCategory(category)) {
-      params.category = category;
+    else {
+      // eslint-disable-next-line no-console
+      console.error(`Invalid search option "${name}"`);
     }
+  }
 
+  query() {
+    const params = this.currentQueryOptions;
+console.log(this.currentQueryOptions, '??');
     // this.lastParams = params;
     // this.lastResult = PixabayAPI.processResponse(fakeResponse);
     // return Promise.resolve(this.lastResult);
 
-    if (_.isEqual(this.lastParams, params)) {
-      return Promise.resolve(this.lastResult);
-    }
+    // if (_.isEqual(this.lastParams, params)) {
+    //   return Promise.resolve(this.lastResult);
+    // }
 
     this.lastResult = undefined;
     return this.fetch(params);
@@ -154,6 +203,3 @@ class PixabayAPI {
 }
 
 export default PixabayAPI;
-export const DefaultImageType = DEFAULT_TYPE;
-export const ImageTypes = PixabayAPI.types;
-export const ImageCategories = PixabayAPI.categories;

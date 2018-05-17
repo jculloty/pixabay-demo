@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withApi } from '../ApiContext';
+import withApi from '../ApiContext';
 
 function LoadMore(props) {
   return (

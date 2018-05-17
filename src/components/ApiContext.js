@@ -9,8 +9,8 @@ const context = {
   queryApi: () => {},
   loadMore: () => {},
   findCachedImage: () => {},
-  types: [],
-  categories: [],
+  setOption: () => {},
+  searchOptions: {},
   data: {
     images: [],
     total: 0,
@@ -19,8 +19,6 @@ const context = {
 
 const ApiContext = createContext(context);
 
-export default ApiContext;
-
 export function withApiProvider(Component) {
   // eslint-disable-next-line react/display-name
   return class extends PureComponent {
@@ -28,13 +26,20 @@ export function withApiProvider(Component) {
       queryApi: (text, type) => this.queryApi(text, type),
       loadMore: () => this.loadMore(),
       findCachedImage: (id) => this.findCachedImage(id),
+      setOption: (name, value) => this.setOption(name, value),
+      searchOptions: PixabayAPI.searchOptions,
+      order: PixabayAPI.order,
+      orientation: PixabayAPI.orientation,
       types: PixabayAPI.types,
-      categories: PixabayAPI.categories,
       data: {
         images: [],
         total: 0,
       },
     };
+
+    setOption = (name, value) => {
+      api.setOption(name, value);
+    }
 
     findCachedImage = (id) => api.findCachedImage(id)
 
@@ -70,7 +75,7 @@ export function withApiProvider(Component) {
   };
 }
 
-export function withApi(Component, requiredProps) {
+export default function withApi(Component, requiredProps) {
   return function ApiComponent(props) {
     return (
       <ApiContext.Consumer>

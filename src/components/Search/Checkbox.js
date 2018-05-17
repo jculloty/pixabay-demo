@@ -1,16 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-class Select extends PureComponent {
+class Checkbox extends PureComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
-    value: PropTypes.string.isRequired,
+    checked: PropTypes.bool.isRequired,
     handleChange: PropTypes.func.isRequired,
   };
 
   handleChange = (event) => {
     const { name } = this.props.config;
-    this.props.handleChange(name, event.target.value);
+    this.props.handleChange(name, event.target.checked ? 'true' : 'false');
   }
 
   render() {
@@ -21,11 +21,9 @@ class Select extends PureComponent {
     }
 
     return (
-      <select value={this.props.value} onChange={this.handleChange}>
-        {options}
-      </select>
+      <input type="checkbox" checked={this.props.checked} onChange={this.handleChange} />
     );
   }
 }
 
-export default Select;
+export default Checkbox;
