@@ -13,7 +13,6 @@ import withApi from '../ApiContext';
 class ImageView extends PureComponent {
   // the dom element needed to calculate the available width on resize
   domElement = React.createRef();
-  innerDomElement = React.createRef();
   state = {
     image: undefined,
     user: undefined,
@@ -31,10 +30,10 @@ class ImageView extends PureComponent {
   }
 
   onResize = () => {
-    const containerWidth = this.domElement.current.offsetWidth;
-    const containerHeight = this.domElement.current.offsetHeight;
-    const innerWidth = this.innerDomElement.current.offsetWidth;
-    this.setState({ containerWidth, containerHeight, innerWidth, windowHeight: window.innerHeight });
+    this.setState({
+      containerWidth: this.domElement.current.offsetWidth,
+      windowHeight: window.innerHeight,
+    });
   }
 
   render() {
@@ -59,9 +58,10 @@ class ImageView extends PureComponent {
       width = maxWidth;
       height = Math.floor(maxWidth / aspect);
     }
-    
-    if (this.state.windowHeight < height) {
-      height = this.state.windowHeight;
+
+    const viewportHeight = Math.floor(this.state.windowHeight * 0.9);
+    if (viewportHeight < height) {
+      height = viewportHeight;
       width = Math.floor(aspect * height);
     }
 
@@ -72,16 +72,19 @@ class ImageView extends PureComponent {
 
     return (
       <div className="image-view" ref={this.domElement} >
-        <div className="single-image" style={style} ref={this.innerDomElement}>
+        <div className="single-image" style={style}>
           <img src={image.url} alt="" />
-          <div className="tag-bar">
-            {tags}
-          </div>
-          <span>{`${image.width}x${image.height}`}</span>
         </div>
         <div className="image-details">
-          <UserInfo user={details.user} />
-          <Summary popularity={details.popularity} />
+          <div>
+            <UserInfo user={details.user} />
+          </div>
+          <div>
+            <Summary summary={details.summary} />
+            <div className="tag-bar">
+              {tags}
+            </div>
+          </div>
         </div>
         <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
       </div>
