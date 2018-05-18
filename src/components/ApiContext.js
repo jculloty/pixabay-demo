@@ -24,7 +24,7 @@ export function withApiProvider(Component) {
   // eslint-disable-next-line react/display-name
   return class extends PureComponent {
     state = {
-      queryApi: (text, type) => this.queryApi(text, type),
+      queryApi: (text) => this.queryApi(text),
       loadMore: () => this.loadMore(),
       findCachedImage: (id) => this.findCachedImage(id),
       setOption: (name, value) => this.setOption(name, value),
@@ -49,8 +49,11 @@ export function withApiProvider(Component) {
 
     findCachedImage = (id) => api.findCachedImage(id)
 
-    queryApi = (text, type) => {
-      api.query(text, type)
+    queryApi = (text) => {
+      if (text) {
+        this.setOption('query', text);
+      }
+      api.query()
         .then((data) => {
           this.setState({ data });
           return data;

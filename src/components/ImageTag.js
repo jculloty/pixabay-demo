@@ -11,8 +11,8 @@ class ImageTag extends PureComponent {
   }
 
   queryTag = () => {
-    this.props.setOption('query', this.props.tag);
-    this.props.queryApi();
+    // this.props.setOption('query', this.props.tag);
+    this.props.queryApi(this.props.tag);
     this.props.history.push('/');
   }
 

@@ -26,7 +26,7 @@ class SearchBox extends PureComponent {
   }
 
   search = () => {
-    this.props.queryApi(this.state.query, this.state.type);
+    this.props.queryApi();
     this.props.history.push('/');
   }
 

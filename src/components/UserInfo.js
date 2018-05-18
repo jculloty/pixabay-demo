@@ -11,8 +11,7 @@ class UserInfo extends PureComponent {
   }
 
   queryUser = () => {
-    this.props.setOption('query', `user:${this.props.user.name}`);
-    this.props.queryApi();
+    this.props.queryApi(`user:${this.props.user.name}`);
     this.props.history.push('/');
   }
 
@@ -28,4 +27,4 @@ class UserInfo extends PureComponent {
   }
 }
 
-export default withRouter(withApi(UserInfo, ['queryApi', 'setOption']));
+export default withRouter(withApi(UserInfo, ['queryApi']));
