@@ -15,7 +15,7 @@ class PixabayAPI {
   };
   static searchOptions = {
     category: {
-      defaultOption: undefined,
+      default: undefined,
       options: [
         'fashion', 'nature', 'backgrounds', 'science', 'education', 'people',
         'feelings', 'religion', 'health', 'places', 'animals', 'industry',
@@ -25,7 +25,7 @@ class PixabayAPI {
       name: 'category',
     },
     colors: {
-      defaultOption: undefined,
+      default: undefined,
       options: [
         'grayscale', 'transparent', 'red', 'orange', 'yellow', 'green', 'turquoise',
         'blue', 'lilac', 'pink', 'white', 'gray', 'black', 'brown',
@@ -34,52 +34,53 @@ class PixabayAPI {
       name: 'colors',
     },
     editorsChoice: {
-      defaultOption: 'false',
+      default: 'false',
       options: ['false', 'true'],
       multiple: false,
       name: 'editorsChoice',
       queryParam: 'editors_choice',
     },
     minHeight: { // TODO add filter
-      defaultOption: 0,
+      default: 0,
       name: 'minHeight',
       queryParam: 'min_height',
     },
     minWidth: { // TODO add filter
-      defaultOption: 0,
+      default: 0,
       name: 'minWidth',
       queryParam: 'min_width',
     },
     order: {
-      defaultOption: 'popular',
+      default: 'popular',
       options: ['popular', 'latest'],
       multiple: false,
       name: 'order',
     },
     orientation: {
-      defaultOption: 'all',
+      default: 'all',
       options: ['all', 'horizontal', 'vertical'],
       multiple: false,
       name: 'orientation',
     },
     query: {
-      defaultOption: undefined,
+      default: undefined,
       name: 'query',
       queryParam: 'q',
     },
     safeSearch: {
-      defaultOption: 'false',
+      default: 'false',
       options: ['false', 'true'],
       multiple: false,
       name: 'safeSearch',
       queryParam: 'safesearch',
     },
     type: {
-      defaultOption: 'all',
+      default: 'all',
       options: ['all', 'photo', 'illustration', 'vector'],
       multiple: false,
       name: 'type',
       queryParam: 'image_type',
+      required: true,
     },
   };
   lastParams = undefined;
@@ -141,6 +142,20 @@ class PixabayAPI {
       // eslint-disable-next-line no-console
       console.error(`Invalid search option "${name}"`);
     }
+  }
+
+  getCurrentQueryOptions() {
+    const options = {};
+    Object.entries(PixabayAPI.searchOptions).forEach((config) => {
+      const { name, queryParam, default: defaultValue } = config[1];
+      const key = queryParam || config.name;
+      options[name] = this.currentQueryOptions[key]
+      // Need to sets undefined as some params (min_width) can be zero
+      if (options[name] === undefined) {
+        options[name] = (undefined !== defaultValue) ? defaultValue : '';
+      }
+    });
+    return options;
   }
 
   query() {

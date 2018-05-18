@@ -14,7 +14,7 @@ class Checkbox extends PureComponent {
   }
 
   render() {
-    const { options: list, defaultOption } = this.props.config;
+    const { options: list, default: defaultOption, name } = this.props.config;
     const options = list.sort().map((item) => <option value={item} key={item}>{item}</option>);
     if (defaultOption === undefined) {
       options.unshift(<option value="" key="_balnk_"></option>);

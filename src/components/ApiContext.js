@@ -10,6 +10,7 @@ const context = {
   loadMore: () => {},
   findCachedImage: () => {},
   setOption: () => {},
+  currentQueryOptions: {},
   searchOptions: {},
   data: {
     images: [],
@@ -37,8 +38,13 @@ export function withApiProvider(Component) {
       },
     };
 
+    static getDerivedStateFromProps() {
+      return { currentQueryOptions: api.getCurrentQueryOptions() };
+    }
+
     setOption = (name, value) => {
       api.setOption(name, value);
+      this.setState({ currentQueryOptions: api.getCurrentQueryOptions() });
     }
 
     findCachedImage = (id) => api.findCachedImage(id)

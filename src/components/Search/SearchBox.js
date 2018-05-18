@@ -14,18 +14,6 @@ class SearchBox extends PureComponent {
     searchOptions: PropTypes.object.isRequired,
   };
 
-  // TODO set initial values based on the defaults
-  state = {
-    query: '',
-    category: '',
-    order: '',
-    orientation: '',
-    type: '',
-    editorsChoice: 'false',
-    safeSearch: 'false',
-    color: '',
-  };
-
   formElementChanged = (property, value) => {
     this.setState({ [property]: value });
     this.props.setOption(property, value);
@@ -46,18 +34,23 @@ class SearchBox extends PureComponent {
     const {
       type, category, order, orientation, safeSearch, editorsChoice, colors,
     } = this.props.searchOptions;
+    const options = this.props.currentQueryOptions;
 
     return (
       <div>
-        <Input searchText={this.state.query} searchTextChanged={this.queryChanged} onEnter={this.search} />
-        <Select value={this.state.type} config={type} handleChange={this.formElementChanged} />
-        <Select value={this.state.category} config={category} handleChange={this.formElementChanged} />
-        <Select value={this.state.order} config={order} handleChange={this.formElementChanged} />
-        <Select value={this.state.orientation} config={orientation} handleChange={this.formElementChanged} />
-        <Checkbox checked={this.state.safeSearch === 'true'} config={safeSearch} handleChange={this.formElementChanged} />
-        <Checkbox checked={this.state.editorsChoice === 'true'} config={editorsChoice} handleChange={this.formElementChanged} />
-        <MultiSelect value={this.state.color} config={colors} handleChange={this.formElementChanged} />
-        <button onClick={this.search}><i className="fa fa-search"></i> Search</button>
+        <form className="form-inline">
+          <Input searchText={options.query} searchTextChanged={this.queryChanged} onEnter={this.search} />
+          <Select value={options[type.name]} config={type} handleChange={this.formElementChanged} />
+          <Select value={options[category.name]} config={category} handleChange={this.formElementChanged} />
+          <Select value={options[order.name]} config={order} handleChange={this.formElementChanged} />
+          <Select value={options[orientation.name]} config={orientation} handleChange={this.formElementChanged} />
+          <Checkbox checked={options[safeSearch.name] === 'true'} config={safeSearch} handleChange={this.formElementChanged} />
+          <Checkbox checked={options[editorsChoice.name] === 'true'} config={editorsChoice} handleChange={this.formElementChanged} />
+          <button type="button" className="btn btn-light" onClick={this.search}><i className="fa fa-search"></i> Search</button>
+        </form>
+        <form>
+          <MultiSelect value={options[colors.name]} config={colors} handleChange={this.formElementChanged} />
+        </form>
       </div>
     );
   }
@@ -66,5 +59,6 @@ class SearchBox extends PureComponent {
 export default withRouter(withApi(SearchBox, [
   'queryApi',
   'setOption',
+  'currentQueryOptions',
   'searchOptions',
 ]));
