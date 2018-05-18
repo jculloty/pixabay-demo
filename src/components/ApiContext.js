@@ -1,7 +1,7 @@
 import React, { createContext, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import PixabayAPI from './api';
+import PixabayAPI from '../services/api';
 
 const api = new PixabayAPI();
 
@@ -10,6 +10,8 @@ const context = {
   loadMore: () => {},
   findCachedImage: () => {},
   setOption: () => {},
+  clearCache: () => {},
+  queryUserDetails: () => {},
   currentQueryOptions: {},
   searchOptions: {},
   data: {
@@ -25,7 +27,9 @@ export function withApiProvider(Component) {
   return class extends PureComponent {
     state = {
       queryApi: (text) => this.queryApi(text),
+      clearCache: () => this.clearCache(),
       loadMore: () => this.loadMore(),
+      queryUserDetails: (id, name) => this.queryUserDetails(id, name),
       findCachedImage: (id) => this.findCachedImage(id),
       setOption: (name, value) => this.setOption(name, value),
       searchOptions: PixabayAPI.searchOptions,
@@ -49,6 +53,13 @@ export function withApiProvider(Component) {
 
     findCachedImage = (id) => api.findCachedImage(id)
 
+    queryUserDetails = (id, name) => api.queryUserDetails(id, name)
+
+    clearCache = () => {
+      api.clearCache();
+      this.queryApi();
+    }
+
     queryApi = (text) => {
       if (text) {
         this.setOption('query', text);
@@ -68,11 +79,11 @@ export function withApiProvider(Component) {
         });
     }
 
-    componentDidMount() {
-      if (!this.state.data.images.length) {
-        this.queryApi();
-      }
-    }
+    // componentDidMount() {
+    //   if (!this.state.data.images.length) {
+    //     this.queryApi();
+    //   }
+    // }
 
     render() {
       return (

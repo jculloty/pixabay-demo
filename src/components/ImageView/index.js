@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 // import PropTypes from 'prop-types';
 import { withRouter, Redirect } from 'react-router-dom';
 import ReactResizeDetector from 'react-resize-detector';
-import _ from 'lodash';
 
 import ImageTag from '../ImageTag';
 import UserInfo from '../UserInfo';
@@ -22,11 +21,7 @@ class ImageView extends PureComponent {
 
   static getDerivedStateFromProps(nextProps) {
     const { id } = nextProps.match.params;
-    const image = nextProps.findCachedImage(id);
-    return {
-      image,
-      tags: image ? _.uniq(image.tags.split(',').map((tag) => tag.trim())) : [],
-    };
+    return { image: nextProps.findCachedImage(id) };
   }
 
   onResize = () => {
@@ -41,7 +36,7 @@ class ImageView extends PureComponent {
       return <Redirect to='/' />;
     }
 
-    const tags = this.state.tags.map((tag) => (
+    const tags = this.state.image.tags.map((tag) => (
       <ImageTag tag={tag} key={tag} />
     ));
 

@@ -1,15 +1,15 @@
 import _ from 'lodash';
 
+import Cache from './cache';
+
 // TODO This should not be hard-coded
-const KEY = '8506502-fd530cf53ce4c9ff2733ae363';
+const API_KEY = '8506502-fd530cf53ce4c9ff2733ae363';
 
 const PIXABAY_URL = 'https://pixabay.com/api/';
-const DEFAULT_TYPE = 'all';
 
 class PixabayAPI {
+  cache = new Cache();
   currentQueryOptions = {
-    key: KEY,
-    image_type: DEFAULT_TYPE,
     page: 1,
     per_page: 100,
   };
@@ -80,11 +80,9 @@ class PixabayAPI {
       multiple: false,
       name: 'type',
       queryParam: 'image_type',
-      required: true,
     },
   };
-  lastParams = undefined;
-  lastResult = undefined;
+  optionsChanged = false;
 
   /**
    * Protects the code against API changes by converting names
@@ -94,7 +92,7 @@ class PixabayAPI {
     const images = response.hits.map((image) => {
       const mappedImage = {
         id: image.id,
-        tags: image.tags,
+        tags: _.uniq(image.tags.split(',').map((tag) => tag.trim())),
         type: image.type,
         large: {
           width: image.imageWidth,
@@ -131,12 +129,35 @@ class PixabayAPI {
     };
   }
 
+  static _isValidOption(config, value) {
+    let isValid = true;
+    if (config.options) {
+      const values = value.split(',');
+
+      values.forEach((val) => {
+        if (!config.options.includes(val)) {
+          isValid = false;
+        }
+      });
+    }
+    return isValid;
+  }
+
   setOption(name, value) {
     const config = PixabayAPI.searchOptions[name];
     if (config) {
       const queryParam = config.queryParam ? config.queryParam : name;
-      // TODO validate search options
-      this.currentQueryOptions[queryParam] = value;
+      if (PixabayAPI._isValidOption(config, value)) {
+        if (config.default !== value) {
+          this.currentQueryOptions[queryParam] = value;
+        }
+        else {
+          delete this.currentQueryOptions[queryParam];
+        }
+        // reset the page setting - the load more button will not work when the paramaters have changed
+        this.currentQueryOptions.page = 1;
+        this.optionsChanged = true;
+      }
     }
     else {
       // eslint-disable-next-line no-console
@@ -148,34 +169,20 @@ class PixabayAPI {
     const options = {};
     Object.entries(PixabayAPI.searchOptions).forEach((config) => {
       const { name, queryParam, default: defaultValue } = config[1];
-      const key = queryParam || config.name;
-      options[name] = this.currentQueryOptions[key]
+      const key = queryParam || name;
+      options[name] = this.currentQueryOptions[key];
       // Need to sets undefined as some params (min_width) can be zero
       if (options[name] === undefined) {
         options[name] = (undefined !== defaultValue) ? defaultValue : '';
       }
     });
+
     return options;
   }
 
-  query() {
-    const params = this.currentQueryOptions;
-    // this.lastParams = params;
-    // this.lastResult = PixabayAPI.processResponse(fakeResponse);
-    // return Promise.resolve(this.lastResult);
-
-    // if (_.isEqual(this.lastParams, params)) {
-    //   return Promise.resolve(this.lastResult);
-    // }
-
-    this.lastResult = undefined;
-    return this.fetch(params);
-  }
-
-  fetch(params) {
-    this.lastParams = params;
-
+  static callAPI(params) {
     const url = new URL(PIXABAY_URL);
+    url.searchParams.append('key', API_KEY);
     Object.keys(params).forEach((key) => url.searchParams.append(key, params[key]));
 
     return fetch(url)
@@ -184,36 +191,96 @@ class PixabayAPI {
           return response.json();
         }
         throw new Error('Error: response not ok');
-      })
-      .then(((json) => {
-        json = PixabayAPI.processResponse(json);
-        if (this.lastResult) {
-          json.images = this.lastResult.images.concat(json.images);
-        }
+      });
+  }
 
-        this.lastResult = json;
-        return json;
-      }));
+  queryUserDetails(id, username) {
+    const cached = this.cache.getUser(id);
+    if (cached) {
+      return Promise.resolve(cached);
+    }
+
+    const param = {
+      q: `user:${username}`,
+      page: 1,
+      per_page: 3, // The min per_page
+    };
+
+    return PixabayAPI.callAPI(param).then((response) => {
+      const user = {
+        id,
+        username,
+        total: response.total,
+        url: response.hits.length > 0
+          ? response.hits[0].userImageURL
+          : undefined,
+      };
+
+      this.cache.addUser(user);
+      return user;
+    });
+  }
+
+  clearCache() {
+    this.cache.clearCache();
+  }
+
+  query() {
+    let params = this.currentQueryOptions;
+
+    if (params.q) {
+      params.q = params.q.trim();
+    }
+
+    const cached = this.cache.getResult(params);
+    if (cached) {
+      return Promise.resolve(cached);
+    }
+
+    const url = new URL(PIXABAY_URL);
+    url.searchParams.append('key', API_KEY);
+    Object.keys(params).forEach((key) => url.searchParams.append(key, params[key]));
+
+    return PixabayAPI.callAPI(params).then(((json) => {
+      json = PixabayAPI.processResponse(json);
+      this.cache.addResult(params, json);
+
+      // If we searched for a user without additional params add him/her to the cache
+      // TODO ensure no other params were set
+      if (params.q && /^user:([^\s]*)$/.test(params.q)) {
+        if (json.images.length) {
+          this.cache.addUser({
+            ...json.images[0].user,
+            total: json.total,
+          });
+        }
+      }
+
+      // Load more was clicked
+      if (params.page > 1) {
+        params = { ...params };
+        while (--params.page > 0) {
+          // TODO the cache might expire for previous values
+          const previous = this.cache.getResult(params);
+          json.images = previous.images.concat(json.images);
+        }
+      }
+
+      return json;
+    }));
   }
 
   loadMore() {
-    if (!this.lastParams) {
-      return Promise.reject(new Error('No previous query detected'));
+    if (this.optionsChanged) {
+      return Promise.reject(new Error('Cannot load more with new options'));
     }
 
-    this.lastParams.page++;
-    return this.fetch(this.lastParams);
+    this.currentQueryOptions.page++;
+    return this.query();
   }
 
   findCachedImage(id) {
-    id = parseInt(id);
-    // we do not have any cached images
-    if (!this.lastResult || !this.lastResult.images) {
-      // return undefined the same as when the id is not found by lodash's _.find() method
-      return undefined;
-    }
-
-    return _.find(this.lastResult.images, (image) => image.id === id);
+    return this.cache.getImage(id);
   }
 }
 

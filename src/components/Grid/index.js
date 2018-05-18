@@ -4,6 +4,7 @@ import ReactResizeDetector from 'react-resize-detector';
 
 import GridImage from './GridImage';
 import LoadMore from '../LoadMore';
+import Cache from '../Cache';
 
 import withApi from '../ApiContext';
 
@@ -28,6 +29,7 @@ class Grid extends PureComponent {
 
   static defaultProps = {
     data: {
+      isCached: false,
       images: [],
       total: 0,
     },
@@ -86,11 +88,12 @@ class Grid extends PureComponent {
 
   render() {
     const { images } = this.state;
-    const { total } = this.props.data;
-
+    const { total, isCached } = this.props.data;
     const imageList = images.map((image) => <GridImage key={image.id} image={image} />);
+
     return (
       <Fragment>
+        <Cache isCached={isCached} />
         <div className="grid" ref={this.domElement} >
           { imageList }
           <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
