@@ -3,12 +3,12 @@ import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom';
 
 import 'font-awesome/css/font-awesome.css';
 
-import SearchBox from './Search';
-import Grid from './Grid';
-import ImagePage from './Image';
-import UserPage from './User/UserPage';
+import SearchBox from '../Search';
+import Grid from '../Grid';
+import ImagePage from '../Image';
+import UserPage from '../User/UserPage';
 
-import { withApiProvider } from './API';
+import { withApiProvider } from '../API';
 
 class App extends Component {
   state = {

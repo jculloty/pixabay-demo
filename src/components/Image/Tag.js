@@ -11,7 +11,6 @@ class ImageTag extends PureComponent {
   }
 
   queryTag = () => {
-    // this.props.setOption('query', this.props.tag);
     this.props.queryApi(this.props.tag);
     this.props.history.push('/');
   }
@@ -25,4 +24,4 @@ class ImageTag extends PureComponent {
   }
 }
 
-export default withRouter(withApi(ImageTag, ['queryApi', 'setOption']));
+export default withRouter(withApi(ImageTag, ['queryApi']));

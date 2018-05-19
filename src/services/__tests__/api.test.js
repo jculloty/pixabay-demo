@@ -67,4 +67,8 @@ describe('API', () => {
     const method = instance.clearCache;
     expect(method).toHaveBeenCalledTimes(1);
   });
+
+  it('Write more tests', () => {
+    expect(true).toBe(false);
+  });
 });

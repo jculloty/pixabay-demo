@@ -8,8 +8,10 @@ function GridImage(props) {
     width: `${props.image.width}px`,
   };
 
+  const tags = props.image.tags.join(' ');
+
   return (
-    <div className="grid-image-container" style={style} title={props.image.tags}>
+    <div className="grid-image-container" style={style} title={tags}>
       <Link to={`/images/${props.image.id}`}>
         <img src={props.image.url} alt="" />
         <span>

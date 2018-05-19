@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User: UserInfo renders correctly 1`] = `
+<a
+  href="/user/99-John-Doe"
+  onClick={[Function]}
+>
+  <img
+    alt=""
+    className="user-image"
+    src="www.jd.com"
+  />
+  <span
+    style={
+      Object {
+        "fontSize": "32px",
+        "paddingTop": "25px",
+        "textAlign": "center",
+      }
+    }
+  >
+    John-Doe
+  </span>
+</a>
+`;
