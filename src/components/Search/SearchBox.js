@@ -27,7 +27,9 @@ class SearchBox extends PureComponent {
 
   search = () => {
     this.props.queryApi();
-    this.props.history.push('/');
+    if (/^\/images\/\d+$/.test(this.props.location.pathname)) {
+      this.props.history.push('/');
+    }
   }
 
   render() {

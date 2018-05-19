@@ -20,7 +20,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src/components/*"
+    "lint": "eslint ./src/components/* ./src/services/*"
   },
   "devDependencies": {
     "enzyme": "^3.3.0",

@@ -8,8 +8,6 @@ import Cache from '../Cache';
 
 import withApi from '../ApiContext';
 
-import './grid.css';
-
 const MAX_IMAGE_HEIGHT = 250;
 
 class Grid extends PureComponent {

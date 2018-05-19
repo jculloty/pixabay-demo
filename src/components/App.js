@@ -6,6 +6,7 @@ import 'font-awesome/css/font-awesome.css';
 import SearchBox from './Search/SearchBox';
 import Grid from './Grid';
 import ImageView from './ImageView';
+import UserView from './User/UserView';
 
 import { withApiProvider } from './ApiContext';
 
@@ -36,12 +37,9 @@ class App extends Component {
             </header>
             <section>
               <Switch>
-                <Route exact path='/' >
-                  <Grid />
-                </Route>
-                <Route path='/images/:id'>
-                  <ImageView />
-                </Route>
+                <Route exact path='/' component={Grid} />
+                <Route path='/images/:id' component={ImageView} />
+                <Route path='/user/:id' component={UserView} />
                 <Route>
                   <Redirect to="/" />
                 </Route>
