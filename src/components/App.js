@@ -3,12 +3,12 @@ import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom';
 
 import 'font-awesome/css/font-awesome.css';
 
-import SearchBox from './Search/SearchBox';
+import SearchBox from './Search';
 import Grid from './Grid';
-import ImageView from './ImageView';
-import UserView from './User/UserView';
+import ImagePage from './Image';
+import UserPage from './User/UserPage';
 
-import { withApiProvider } from './ApiContext';
+import { withApiProvider } from './API';
 
 class App extends Component {
   state = {
@@ -38,8 +38,8 @@ class App extends Component {
             <section>
               <Switch>
                 <Route exact path='/' component={Grid} />
-                <Route path='/images/:id' component={ImageView} />
-                <Route path='/user/:id' component={UserView} />
+                <Route path='/images/:id' component={ImagePage} />
+                <Route path='/user/:id' component={UserPage} />
                 <Route>
                   <Redirect to="/" />
                 </Route>

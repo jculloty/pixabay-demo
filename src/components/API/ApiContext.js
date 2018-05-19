@@ -1,7 +1,7 @@
 import React, { createContext, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import PixabayAPI from '../services/api';
+import PixabayAPI from '../../services/api';
 
 const api = new PixabayAPI();
 
@@ -22,7 +22,7 @@ const context = {
 
 const ApiContext = createContext(context);
 
-export function withApiProvider(Component) {
+const withApiProvider = function(Component) {
   // eslint-disable-next-line react/display-name
   return class extends PureComponent {
     state = {
@@ -93,9 +93,9 @@ export function withApiProvider(Component) {
       );
     }
   };
-}
+};
 
-export default function withApi(Component, requiredProps) {
+const withApi = function(Component, requiredProps) {
   return function ApiComponent(props) {
     return (
       <ApiContext.Consumer>
@@ -131,4 +131,7 @@ export default function withApi(Component, requiredProps) {
       </ApiContext.Consumer>
     );
   };
-}
+};
+
+export default withApi;
+export { withApiProvider };

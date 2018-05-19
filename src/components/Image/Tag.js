@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import withApi from './ApiContext';
+import withApi from '../API';
 
 class ImageTag extends PureComponent {
   static propTypes = {

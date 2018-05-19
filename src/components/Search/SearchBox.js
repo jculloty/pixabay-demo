@@ -7,7 +7,7 @@ import Select from './Select';
 import Checkbox from './Checkbox';
 import MultiSelect from './MultiSelect';
 
-import withApi from '../ApiContext';
+import withApi from '../API';
 
 class SearchBox extends PureComponent {
   static propTypes = {

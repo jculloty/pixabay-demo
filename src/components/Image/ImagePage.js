@@ -3,13 +3,13 @@ import React, { PureComponent } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import ReactResizeDetector from 'react-resize-detector';
 
-import ImageTag from '../ImageTag';
-import UserInfo from '../UserInfo';
+import ImageTag from './Tag';
+import { UserInfo } from '../User';
 import Summary from './Summary';
 
-import withApi from '../ApiContext';
+import withApi from '../API';
 
-class ImageView extends PureComponent {
+class ImagePage extends PureComponent {
   // the dom element needed to calculate the available width on resize
   domElement = React.createRef();
   state = {
@@ -87,4 +87,4 @@ class ImageView extends PureComponent {
   }
 }
 
-export default withRouter(withApi(ImageView));
+export default withRouter(withApi(ImagePage));

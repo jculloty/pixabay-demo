@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 // import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import withApi from '../ApiContext';
+import withApi from '../API';
 import UserHeader from './UserHeader';
 import Grid from '../Grid';
 
-class UserView extends PureComponent {
+class UserPage extends PureComponent {
   state = {
     user: undefined,
   };
@@ -34,4 +34,4 @@ class UserView extends PureComponent {
   }
 }
 
-export default withRouter(withApi(UserView, ['queryUserDetails', 'queryApi']));
+export default withRouter(withApi(UserPage, ['queryUserDetails', 'queryApi']));
