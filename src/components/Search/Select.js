@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import Label from './Label';
@@ -24,9 +24,9 @@ class Select extends PureComponent {
     }
 
     return (
-      <div>
+      <div className="form-group">
         <Label name={name} />
-        <select id={name} value={this.props.value} onChange={this.handleChange}>
+        <select id={name} value={this.props.value} onChange={this.handleChange} className="custom-select">
           {options}
         </select>
       </div>

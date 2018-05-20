@@ -16,7 +16,7 @@ class SearchBox extends PureComponent {
 
   formElementChanged = (property, value) => {
     this.setState({ [property]: value });
-console.log(value);    
+console.log(value);
     this.props.setOption(property, value);
   }
 
@@ -35,25 +35,31 @@ console.log(value);
 
   render() {
     const {
-      query, type, category, order, orientation, safeSearch, editorsChoice, colors,
+      type, category, order, orientation, safeSearch, editorsChoice, colors,
     } = this.props.searchOptions;
     const options = this.props.currentQueryOptions;
 
     return (
-      <div>
-        <form className="form-inline">
-          <Input value={options.query} handleChange={this.queryChanged} handleEnter={this.search} />
-          <Select value={options[type.name]} config={type} handleChange={this.formElementChanged} />
-          <Select value={options[category.name]} config={category} handleChange={this.formElementChanged} />
-          <Select value={options[order.name]} config={order} handleChange={this.formElementChanged} />
-          <Select value={options[orientation.name]} config={orientation} handleChange={this.formElementChanged} />
-          <Checkbox checked={options[safeSearch.name] === 'true'} config={safeSearch} handleChange={this.formElementChanged} />
-          <Checkbox checked={options[editorsChoice.name] === 'true'} config={editorsChoice} handleChange={this.formElementChanged} />
-          <button type="button" className="btn btn-light" onClick={this.search}><i className="fa fa-search"></i> Search</button>
-        </form>
-        <form>
-          <MultiSelect value={options[colors.name]} config={colors} handleChange={this.formElementChanged} />
-        </form>
+      <div className="container-fluid">
+        <div className="row">
+          <span>
+            <form className="form-inline">
+              <Input value={options.query} handleChange={this.queryChanged} handleEnter={this.search} />
+              <Select value={options[type.name]} config={type} handleChange={this.formElementChanged} />
+              <Select value={options[category.name]} config={category} handleChange={this.formElementChanged} />
+              <Select value={options[order.name]} config={order} handleChange={this.formElementChanged} />
+              <Select value={options[orientation.name]} config={orientation} handleChange={this.formElementChanged} />
+              <Checkbox checked={options[safeSearch.name] === 'true'} config={safeSearch} handleChange={this.formElementChanged} />
+              <Checkbox checked={options[editorsChoice.name] === 'true'} config={editorsChoice} handleChange={this.formElementChanged} />
+            </form>
+            <form className="form">
+              <MultiSelect value={options[colors.name]} config={colors} handleChange={this.formElementChanged} />
+            </form>
+          </span>
+          <span className="my-auto">
+            <button type="button" className="btn btn-light" onClick={this.search}><i className="fa fa-search"></i> Search</button>
+          </span>
+        </div>
       </div>
     );
   }

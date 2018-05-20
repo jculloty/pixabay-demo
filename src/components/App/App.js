@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import 'font-awesome/css/font-awesome.css';
 
-import SearchBox from '../Search';
+import Header from './Header';
 import HomePage from '../Home';
 import ImagePage from '../Image';
 import UserPage from '../User/UserPage';
 
 import { withApiProvider } from '../API';
+
 
 class App extends Component {
   state = {
@@ -29,12 +30,7 @@ class App extends Component {
     return (
       <BrowserRouter>
           <div className="content">
-            <header>
-              <Link to="/">
-                <span>Pixabay</span>
-              </Link>
-              <SearchBox />
-            </header>
+            <Header />
             <section>
               <Switch>
                 <Route exact path='/' component={HomePage} />

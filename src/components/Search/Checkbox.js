@@ -19,9 +19,9 @@ class Checkbox extends PureComponent {
     const { name } = this.props.config;
 
     return (
-      <div>
+      <div className="form-check form-check-inline">
+        <input type="checkbox" id={name} checked={this.props.checked} onChange={this.handleChange} className="form-control" />
         <Label name={name} />
-        <input type="checkbox" id={name} checked={this.props.checked} onChange={this.handleChange} />
       </div>
     );
   }

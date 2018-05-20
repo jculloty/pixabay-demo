@@ -37,6 +37,7 @@ class SearchInput extends PureComponent {
         onChange={this.handleChange}
         ref={this.setTextInputRef}
         onKeyPress={this.handleKeyPress}
+        className="form-control"
       />
     );
   }

@@ -36,10 +36,10 @@ class MultiSelect extends PureComponent {
     const checked = this.props.value.split(',');
 
     const options = list.sort().map((item) => (
-      <span key={item}>
+      <div className="form-check form-check-inline" key={item}>
         <Label name={item} />
-        <input id={name} type="checkbox" checked={checked.includes(item)} name={item} onChange={this.handleChange} />
-      </span>
+        <input id={name} type="checkbox" checked={checked.includes(item)} name={item} onChange={this.handleChange} className="form-control" />
+      </div>
     ));
 
     return (
