@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 
 import SearchBox from '../Search';
-import Grid from '../Grid';
+import HomePage from '../Home';
 import ImagePage from '../Image';
 import UserPage from '../User/UserPage';
 
@@ -37,7 +37,7 @@ class App extends Component {
             </header>
             <section>
               <Switch>
-                <Route exact path='/' component={Grid} />
+                <Route exact path='/' component={HomePage} />
                 <Route path='/images/:id' component={ImagePage} />
                 <Route path='/user/:id' component={UserPage} />
                 <Route>

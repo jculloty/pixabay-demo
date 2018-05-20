@@ -79,12 +79,6 @@ const withApiProvider = function(Component) {
         });
     }
 
-    // componentDidMount() {
-    //   if (!this.state.data.images.length) {
-    //     this.queryApi();
-    //   }
-    // }
-
     render() {
       return (
         <ApiContext.Provider value={this.state}>
