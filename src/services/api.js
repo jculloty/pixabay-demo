@@ -90,9 +90,15 @@ class PixabayAPI {
    */
   static processResponse(response) {
     const images = response.hits.map((image) => {
+      let tags = _.uniq(image.tags.split(',').map((tag) => tag.trim()));
+      // a husteric for dealing with cases where there are no commas separating the tags
+      if (tags.length === 1 && tags[0].length > 20) {
+        tags = _.uniq(tags[0].split(' ').map((tag) => tag.trim()));
+      }
+
       const mappedImage = {
         id: image.id,
-        tags: _.uniq(image.tags.split(',').map((tag) => tag.trim())),
+        tags,
         type: image.type,
         large: {
           width: image.imageWidth,
