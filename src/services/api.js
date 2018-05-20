@@ -131,7 +131,7 @@ class PixabayAPI {
 
   static _isValidOption(config, value) {
     let isValid = true;
-    if (config.options) {
+    if (value && config.options) {
       const values = value.split(',');
 
       values.forEach((val) => {
