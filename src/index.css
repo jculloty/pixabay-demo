@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  color: #636363;
 }
 
 .content {
@@ -16,29 +17,16 @@ header {
 }
 
 footer {
-  display: none;
   background: #fafafa;
   border-bottom: 1px solid #eee;
-  height: 52px;
   color: #777;
-}
-
-footer p {
-  padding-left: 20px;
+  margin: 10px;
 }
 
 section {
   /* margin-top: 50px; */
   flex: 1;
 }
-
-/* input {
-  width: 100%;
-  margin: 0;
-  padding: 18px 0;
-  border: 0;
-  font: normal 16px arial,sans-serif;
-} */
 
 .load-more-button {
   display: block;
@@ -53,6 +41,7 @@ section {
 
 .tag-bar {
   margin: 10px;
+  max-width: 450px;
 }
 
 .image-tag {
@@ -145,4 +134,26 @@ section {
   flex-wrap: wrap;
   justify-content: space-between;
   background-color: #f7f8fa;
+}
+
+.cached-warning {
+  width: 100%;
+  background: #f7f8fa;
+  padding: 10px 10px;
+}
+
+.cached-warning i {
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.form-check input,
+.form-check label,
+.form-group select,
+.form-group label {
+  margin: 3px;
 }

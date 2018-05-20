@@ -200,14 +200,14 @@ class PixabayAPI {
       });
   }
 
-  queryUserDetails(id, username) {
+  queryUserDetails(id, name) {
     const cached = this.cache.getUser(id);
     if (cached) {
       return Promise.resolve(cached);
     }
 
     const param = {
-      q: `user:${username}`,
+      q: `user:${name}`,
       page: 1,
       per_page: 3, // The min per_page
     };
@@ -215,7 +215,7 @@ class PixabayAPI {
     return PixabayAPI.callAPI(param).then((response) => {
       const user = {
         id,
-        username,
+        name,
         total: response.total,
         url: response.hits.length > 0
           ? response.hits[0].userImageURL
@@ -250,6 +250,7 @@ class PixabayAPI {
     return PixabayAPI.callAPI(params).then(((json) => {
       json = PixabayAPI.processResponse(json);
       this.cache.addResult(params, json);
+      this.optionsChanged = false;
 
       // If we searched for a user without additional params add him/her to the cache
       // TODO ensure no other params were set

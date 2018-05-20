@@ -16,7 +16,7 @@ class UserPage extends PureComponent {
     const [, userId, username] = id.match(/^(\d+)-(.+)$/);
     this.props.queryUserDetails(userId, username).then((user) => {
       this.setState({ user }, () => {
-        this.props.queryApi(`user:${user.username}`);
+        this.props.queryApi(`user:${user.name}`);
       });
     });
   }

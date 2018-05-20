@@ -19,14 +19,14 @@ class Cache extends PureComponent {
     }
 
     return (
-      <p>
+      <div className="cached-warning">
         <i className="fa fa-save"></i>
         Showing cached results
-        <span onClick={this.clearCache}>
+        <span onClick={this.clearCache} className="clickable">
           <i className="fa fa-refresh"></i>
           Refresh
         </span>
-      </p>
+      </div>
     );
   }
 }

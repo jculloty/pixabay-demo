@@ -19,8 +19,8 @@ class UserInfo extends PureComponent {
     const { user } = this.props;
 
     return (
-      <Link to={`/user/${this.props.user.id}-${this.props.user.name}`}>
-        <img src={user.url} alt="" className="user-image" />
+      <Link to={`/user/${this.props.user.id}-${this.props.user.name}`} className="image-view">
+        <img src={user.url} alt="" className="user-image" style={{ maxWidth: '300px' }} />
         <span style={{ fontSize: '32px', paddingTop: '25px', textAlign: 'center' }}>{user.name}</span>
       </Link>
     );

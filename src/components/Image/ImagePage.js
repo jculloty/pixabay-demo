@@ -44,7 +44,10 @@ class ImagePage extends PureComponent {
     const image = details.large;
 
     let { width, height, aspect } = image;
+
+    // The main image cannot be larger thtn the container
     let maxWidth = this.state.containerWidth;
+    // If the container is wide only use 70% for the main image
     if (maxWidth > 1000) {
       maxWidth = Math.floor(maxWidth * 0.7);
     }
