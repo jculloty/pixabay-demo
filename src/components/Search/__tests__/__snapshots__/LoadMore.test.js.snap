@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search: LoadMore renders correctly 1`] = `
+<div>
+  <button
+    className="load-more-button"
+    onClick={[Function]}
+  >
+    Load more images...
+  </button>
+</div>
+`;

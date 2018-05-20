@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import Label from './Label';
+
 class Checkbox extends PureComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
@@ -14,14 +16,13 @@ class Checkbox extends PureComponent {
   }
 
   render() {
-    const { options: list, default: defaultOption, name } = this.props.config;
-    const options = list.sort().map((item) => <option value={item} key={item}>{item}</option>);
-    if (defaultOption === undefined) {
-      options.unshift(<option value="" key="_balnk_"></option>);
-    }
+    const { name } = this.props.config;
 
     return (
-      <input type="checkbox" checked={this.props.checked} onChange={this.handleChange} />
+      <div>
+        <Label name={name} />
+        <input type="checkbox" id={name} checked={this.props.checked} onChange={this.handleChange} />
+      </div>
     );
   }
 }

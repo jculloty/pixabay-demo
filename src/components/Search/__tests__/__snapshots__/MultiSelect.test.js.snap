@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search: MultiSelect renders correctly 1`] = `
+<div>
+  <span>
+    <label
+      htmlFor="one"
+    >
+      One
+    </label>
+    <input
+      checked={false}
+      id="testing"
+      name="one"
+      onChange={[Function]}
+      type="checkbox"
+    />
+  </span>
+  <span>
+    <label
+      htmlFor="three"
+    >
+      Three
+    </label>
+    <input
+      checked={true}
+      id="testing"
+      name="three"
+      onChange={[Function]}
+      type="checkbox"
+    />
+  </span>
+  <span>
+    <label
+      htmlFor="two"
+    >
+      Two
+    </label>
+    <input
+      checked={true}
+      id="testing"
+      name="two"
+      onChange={[Function]}
+      type="checkbox"
+    />
+  </span>
+</div>
+`;

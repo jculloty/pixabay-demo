@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import Label from './Label';
+
 class MultiSelect extends PureComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
@@ -9,14 +11,18 @@ class MultiSelect extends PureComponent {
   };
 
   state = {
-    value: '',
+    value: [],
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    return {
+      value: nextProps.value ? nextProps.value.split(',') : [],
+    };
   }
 
   handleChange = (event) => {
     const { checked, name } = event.target;
-    const list = this.state.value
-      .split(',')
-      .filter((item) => item !== name);
+    const list = this.state.value.filter((item) => item !== name);
 
     if (checked) {
       list.push(name);
@@ -26,11 +32,13 @@ class MultiSelect extends PureComponent {
   }
 
   render() {
-    const { options: list } = this.props.config;
+    const { options: list, name } = this.props.config;
+    const checked = this.props.value.split(',');
+
     const options = list.sort().map((item) => (
       <span key={item}>
-        <label>{item}</label>
-        <input type="checkbox" name={item} onChange={this.handleChange} />
+        <Label name={item} />
+        <input id={name} type="checkbox" checked={checked.includes(item)} name={item} onChange={this.handleChange} />
       </span>
     ));
 

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search: Label renders correctly 1`] = `
+<label
+  htmlFor="testingOneTwoThree"
+>
+  Testing One Two Three
+</label>
+`;

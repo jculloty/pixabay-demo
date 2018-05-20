@@ -16,6 +16,7 @@ class SearchBox extends PureComponent {
 
   formElementChanged = (property, value) => {
     this.setState({ [property]: value });
+console.log(value);    
     this.props.setOption(property, value);
   }
 
@@ -34,14 +35,14 @@ class SearchBox extends PureComponent {
 
   render() {
     const {
-      type, category, order, orientation, safeSearch, editorsChoice, colors,
+      query, type, category, order, orientation, safeSearch, editorsChoice, colors,
     } = this.props.searchOptions;
     const options = this.props.currentQueryOptions;
 
     return (
       <div>
         <form className="form-inline">
-          <Input searchText={options.query} searchTextChanged={this.queryChanged} onEnter={this.search} />
+          <Input value={options.query} handleChange={this.queryChanged} handleEnter={this.search} />
           <Select value={options[type.name]} config={type} handleChange={this.formElementChanged} />
           <Select value={options[category.name]} config={category} handleChange={this.formElementChanged} />
           <Select value={options[order.name]} config={order} handleChange={this.formElementChanged} />

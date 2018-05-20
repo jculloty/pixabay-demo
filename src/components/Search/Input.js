@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 class SearchInput extends PureComponent {
   static propTypes = {
-    searchText: PropTypes.string.isRequired,
-    searchTextChanged: PropTypes.func.isRequired,
-    onEnter: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleEnter: PropTypes.func.isRequired,
   };
   domElement = React.createRef();
 
@@ -21,22 +21,24 @@ class SearchInput extends PureComponent {
 
   handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      this.props.onEnter();
+      this.props.handleEnter();
     }
   }
 
   handleChange = (event) => {
-    this.props.searchTextChanged(event.target.value);
+    this.props.handleChange(event.target.value);
   }
 
   render() {
-    return <input type="text"
-      placeholder="Search images, vectors and photos"
-      value={this.props.searchText}
-      onChange={this.handleChange}
-      ref={this.setTextInputRef}
-      onKeyPress={this.handleKeyPress}
-    />;
+    return (
+      <input type="text"
+        placeholder="Search images, vectors and photos"
+        value={this.props.value}
+        onChange={this.handleChange}
+        ref={this.setTextInputRef}
+        onKeyPress={this.handleKeyPress}
+      />
+    );
   }
 }
 

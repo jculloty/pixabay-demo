@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import Label from './Label';
+
 class Select extends PureComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
@@ -16,14 +18,15 @@ class Select extends PureComponent {
   render() {
     const { options: list, default: defaultOption, name } = this.props.config;
     const options = list.sort().map((item) => <option value={item} key={item}>{item}</option>);
+
     if (defaultOption === undefined) {
       options.unshift(<option value="" key="_balnk_"></option>);
     }
 
     return (
-      <div className="form-group">
-        <label>{name}</label>
-        <select className="form-control" value={this.props.value} onChange={this.handleChange}>
+      <div>
+        <Label name={name} />
+        <select id={name} value={this.props.value} onChange={this.handleChange}>
           {options}
         </select>
       </div>

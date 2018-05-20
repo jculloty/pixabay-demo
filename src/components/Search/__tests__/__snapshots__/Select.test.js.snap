@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search: Select renders blank options when there is no default 1`] = `
+<div>
+  <label
+    htmlFor="testing"
+  >
+    Testing
+  </label>
+  <select
+    id="testing"
+    onChange={[Function]}
+    value="two"
+  >
+    <option
+      value=""
+    />
+    <option
+      value="one"
+    >
+      one
+    </option>
+    <option
+      value="three"
+    >
+      three
+    </option>
+    <option
+      value="two"
+    >
+      two
+    </option>
+  </select>
+</div>
+`;
+
+exports[`Search: Select renders correctly 1`] = `
+<div>
+  <label
+    htmlFor="testing"
+  >
+    Testing
+  </label>
+  <select
+    id="testing"
+    onChange={[Function]}
+    value="two"
+  >
+    <option
+      value="one"
+    >
+      one
+    </option>
+    <option
+      value="three"
+    >
+      three
+    </option>
+    <option
+      value="two"
+    >
+      two
+    </option>
+  </select>
+</div>
+`;

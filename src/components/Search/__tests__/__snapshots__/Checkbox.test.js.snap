@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search: Checkbox renders correctly 1`] = `
+<div>
+  <label
+    htmlFor="testing"
+  >
+    Testing
+  </label>
+  <input
+    checked={true}
+    id="testing"
+    onChange={[Function]}
+    type="checkbox"
+  />
+</div>
+`;
+
+exports[`Search: Checkbox renders correctly 2`] = `
+<div>
+  <label
+    htmlFor="testing"
+  >
+    Testing
+  </label>
+  <input
+    checked={false}
+    id="testing"
+    onChange={[Function]}
+    type="checkbox"
+  />
+</div>
+`;
