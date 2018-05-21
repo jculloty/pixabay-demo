@@ -57,8 +57,13 @@ class Grid extends PureComponent {
     let aspect = 0;
     let rowStart = 0;
     for (let i = 0; i < imageCount; i++) {
+      // given a fixed height the total with of images will be H(a1+a2+a3)
+      // hight by the total aspect
       aspect += propImages[i].medium.aspect;
+      // find the height that will fit all current images
       const fitHeight = Math.floor(width / aspect);
+      // once the hight for the row is below the max image height
+      // use that height to calcualte the width
       if (fitHeight <= MAX_IMAGE_HEIGHT) {
         for (let k = rowStart; k <= i; k++) {
           images.push(Grid.copyImageDetails(propImages[k], fitHeight));

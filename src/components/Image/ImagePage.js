@@ -57,6 +57,7 @@ class ImagePage extends PureComponent {
       height = Math.floor(maxWidth / aspect);
     }
 
+    // for tall images ensure that are less that the screen hight
     const viewportHeight = Math.floor(this.state.windowHeight * 0.9);
     if (viewportHeight < height) {
       height = viewportHeight;
