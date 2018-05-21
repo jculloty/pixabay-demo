@@ -28,7 +28,14 @@ console.log(value);
 
   search = () => {
     this.props.queryApi();
-    if (/^\/images\/\d+$/.test(this.props.location.pathname)) {
+    // we must leave the image page after a search
+    let redirectToHome = /^\/images\/\d+$/.test(this.props.location.pathname);
+    // we are on the user page, but are not including a user in the search
+    if (!redirectToHome && /^\/user\/\d+/.test(this.props.location.pathname)) {
+      redirectToHome = !(/user:([^\s]*)$/.test(this.props.currentQueryOptions.query));
+    }
+
+    if (redirectToHome) {
       this.props.history.push('/');
     }
   }
